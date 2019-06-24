@@ -13,6 +13,10 @@ const Children = styled.div<{ shown?: boolean }>`
   display: ${props => (props.shown ? 'block' : 'none')};
 `;
 
+const CollapseButton = styled.a<{ collapsed: boolean }>`
+  color: ${props => (props.collapsed ? 'blue' : 'red')};
+`;
+
 interface Props {
   data: Node[];
 }
@@ -50,15 +54,24 @@ export default class Tree extends React.Component<Props, State> {
   }
 
   public renderNode(node: Node, depth: number, id: string) {
-    console.log(this.context);
     return (
-      <Item depth={depth}>
+      <Item key={id} depth={depth}>
         {this.context.collapsible ? (
-          <a onClick={() => this.childClickHandler(id)}>{node.text}</a>
+          <span>
+            {node.text}{' '}
+            {node.children && (
+              <CollapseButton
+                collapsed={this.state.collapsed.indexOf(id) !== -1}
+                onClick={() => this.childClickHandler(id)}
+              >
+                {this.state.collapsed.indexOf(id) === -1 ? '[+]' : '[-]'}
+              </CollapseButton>
+            )}
+          </span>
         ) : (
           node.text
         )}
-        <Children shown={this.state.collapsed.indexOf(id) === -1}>
+        <Children shown={!this.context.collapsible || this.state.collapsed.indexOf(id) !== -1}>
           {node.children &&
             (this.context.sorted ? node.children.sort(this.sort) : node.children).map((n: Node) =>
               this.renderNode(n, depth + 1, n.text + depth)

@@ -125,6 +125,7 @@ class App extends React.Component<{}, {}> {
               <Sortable>
                 <Collapsible>
                   <Tree data={data} />
+                  <Tree data={data} />
                 </Collapsible>
               </Sortable>
             </Showcase>
