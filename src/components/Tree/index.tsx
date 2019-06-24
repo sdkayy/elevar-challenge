@@ -53,29 +53,42 @@ export default class Tree extends React.Component<Props, State> {
     return a < b ? -1 : a > b ? 1 : 0;
   }
 
+  // Render the title and the button drop down logic if needed.
+  public renderTitle(node: Node, id: string) {
+    return this.context.collapsible ? (
+      <span>
+        {node.text}{' '}
+        {node.children && (
+          <CollapseButton
+            collapsed={this.state.collapsed.indexOf(id) !== -1}
+            onClick={() => this.childClickHandler(id)}
+          >
+            {this.state.collapsed.indexOf(id) === -1 ? '[+]' : '[-]'}
+          </CollapseButton>
+        )}
+      </span>
+    ) : (
+      node.text
+    );
+  }
+
+  // Render the children
+  public renderChildren(node: Node, depth: number, id: string) {
+    return (
+      node.children &&
+      (this.context.sorted ? node.children.sort(this.sort) : node.children).map((n: Node) =>
+        this.renderNode(n, depth + 1, n.text + depth)
+      )
+    );
+  }
+
+  // Render the node
   public renderNode(node: Node, depth: number, id: string) {
     return (
       <Item key={id} depth={depth}>
-        {this.context.collapsible ? (
-          <span>
-            {node.text}{' '}
-            {node.children && (
-              <CollapseButton
-                collapsed={this.state.collapsed.indexOf(id) !== -1}
-                onClick={() => this.childClickHandler(id)}
-              >
-                {this.state.collapsed.indexOf(id) === -1 ? '[+]' : '[-]'}
-              </CollapseButton>
-            )}
-          </span>
-        ) : (
-          node.text
-        )}
+        {this.renderTitle(node, id)}
         <Children shown={!this.context.collapsible || this.state.collapsed.indexOf(id) !== -1}>
-          {node.children &&
-            (this.context.sorted ? node.children.sort(this.sort) : node.children).map((n: Node) =>
-              this.renderNode(n, depth + 1, n.text + depth)
-            )}
+          {this.renderChildren(node, depth, id)}
         </Children>
       </Item>
     );
