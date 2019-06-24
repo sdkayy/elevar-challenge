@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "sourceMap": true,
+    "module": "commonjs",
+    "lib": [
+      "es5",
+      "es2015.promise",
+      "es6",
+      "es7",
+      "esnext",
+      "dom"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "shared/*": ["./shared/*"],
+      "src/*": ["src/*"]
+    },
+    "noEmit": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "isolatedModules": true
+  },
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./dist",
+    "./admin/build",
+    "./build",
+    "./build-api",
+    "./**/*.spec.ts",
+    "./**/*.test.ts"
+  ]
+}
